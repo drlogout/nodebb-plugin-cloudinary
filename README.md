@@ -1,6 +1,7 @@
 # NodeBB Plugin Cloudinary
 
 A plugin that uploads images to Cloudinary.
+Inspired by https://github.com/barisusakli/nodebb-plugin-imgur
 
 ## Installation
 
