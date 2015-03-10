@@ -1,0 +1,26 @@
+{
+  "id": "nodebb-plugin-cloudinary",
+  "name": "Cloudinary Upload Plugin",
+  "description": "A Plugin that uploads images to cloudinary",
+  "url": "https://bitbucket.org/drlogout/nodebb-plugin-cloudinary.git",
+  "library": "./index.js",
+  "staticDirs": {
+    "cloudinary": "public"
+  },
+  "hooks": [
+    {
+      "hook": "static:app.load",
+      "method": "init"
+    },
+    {
+      "hook": "filter:admin.header.build",
+      "method": "admin.menu"
+    },
+    {
+      "hook": "filter:uploadImage",
+      "method": "upload",
+      "priority": 6
+    }
+  ],
+  "templates": "./public/templates"
+}

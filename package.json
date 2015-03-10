@@ -1,0 +1,23 @@
+{
+  "name": "nodebb-plugin-cloudinary",
+  "version": "0.1.0",
+  "description": "A Plugin that uploads images to cloudinary",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://drlogout@bitbucket.org/drlogout/nodebb-plugin-cloudinary.git"
+  },
+  "keywords": [
+    "nodebb",
+    "plugin",
+    "cloudinary"
+  ],
+  "author": "Christian Nolte",
+  "license": "ISC",
+  "dependencies": {
+    "cloudinary": "^1.1.2"
+  }
+}
