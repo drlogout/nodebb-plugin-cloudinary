@@ -16,9 +16,17 @@
 				<input id="api_secret" type="text" class="form-control" placeholder="Enter your API secret" value="{config.api_secret}">
 			</div>
             <div class="form-group">
-                <label>Foler name</label>
-                <input id="folder" type="text" class="form-control" placeholder="Enter folder name (optional)" value="{config.folder}">
+                <label>Cloudinary upload options in JSON format</label>
+                <textarea id="options" class="form-control" rows="6">{options}</textarea>
             </div>
+            <p>e.g.
+                <code>
+                    {
+                        "folder": "/folder-name"
+                    }
+                </code>
+            </p>
+            <p>Documentation: <a href="http://cloudinary.com/documentation/node_image_upload#all_upload_options" target="_blank">http://cloudinary.com/documentation/node_image_upload#all_upload_options</a></p>
 		</div>
 	</div>
 </form>
@@ -32,27 +40,33 @@
 
 	$('#save').on('click', function() {
 
-        var folder = $('#folder').val();
+        var options;
 
-        if (folder.length) {
-
-            if (folder.charAt(0) !== '/') {
-                folder = '';
-                app.alertError('Folder name needs start with /');
+        if ($('#options').val() === '') {
+            options = {};
+        } else {
+            try {
+                options = JSON.parse($('#options').val());
+            } catch (e) {
+                app.alertError('No valid JSON');
+                options = {};
                 return;
             }
-
         }
+
+
         $.ajax({
             url: config.relative_path + '/api/admin/plugins/cloudinary/save',
             method: 'POST',
             data: {
                 _csrf : $('#csrf_token').val(),
-                config: {
-                    cloud_name : $('#cloud_name').val(),
-                    api_key : $('#api_key').val(),
-                    api_secret : $('#api_secret').val(),
-                    folder : folder
+                cloudinarySettings: {
+                    config: {
+                        cloud_name : $('#cloud_name').val(),
+                        api_key : $('#api_key').val(),
+                        api_secret : $('#api_secret').val(),
+                    },
+                    options: options
                 }
             },
             success: function(data){

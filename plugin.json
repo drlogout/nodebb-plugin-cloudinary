@@ -2,7 +2,7 @@
   "id": "nodebb-plugin-cloudinary",
   "name": "Cloudinary Upload Plugin",
   "description": "A Plugin that uploads images to cloudinary",
-  "url": "https://bitbucket.org/drlogout/nodebb-plugin-cloudinary.git",
+  "url": "https://github.com/drlogout/nodebb-plugin-cloudinary",
   "library": "./index.js",
   "staticDirs": {
     "cloudinary": "public"

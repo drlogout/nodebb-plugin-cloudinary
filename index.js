@@ -4,51 +4,59 @@ var fs = require('fs');
 var async = require('async');
 var cloudinary = require('cloudinary');
 var db = module.parent.require('./database');
-var admin = {};
-var requiredConfig = ['cloud_name', 'api_key', 'api_secret'];
-var config = {
-  cloud_name: '',
-  api_key: '',
-  api_secret: '',
-  folder: ''
-}
+
+var cloudinarySettings = {
+  config: {
+    cloud_name: '',
+    api_key: '',
+    api_secret: '',
+  },
+  options: {}
+};
 
 
 function renderAdmin(req, res, next) {
 
-  db.getObject('nodebb-plugin-cloudinary', function (err, dbConfig) {
-    if (err) {
-      return next(err);
-    }
+    res.render('admin/plugins/cloudinary', {
+      config: cloudinarySettings.config,
+      options: JSON.stringify(cloudinarySettings.options),
+      csrf: req.csrfToken()
+    });
 
-    if (dbConfig) {
-      config = dbConfig;
-    }
-
-    res.render('admin/plugins/cloudinary', {config: config, csrf: req.csrfToken()});
-
-  });
 }
+
 
 function save(req, res, next) {
 
-  var newConfig = req.body.config;
-  var configValid = true;
+  function checkConfig(object) {
 
-  for (var i = 0; i < requiredConfig.length; i++) {
-    if (!newConfig[requiredConfig[i]]) {
-      configValid = false;
-      break;
+    var isValid = true;
+    for (var i in object) {
+      if (!object[i]) {
+        isValid = false;
+        break;
+      }
     }
+    return isValid;
+
   }
 
+  var configValid = checkConfig(req.body.cloudinarySettings.config);
+
+
   if (configValid) {
-    db.setObject('nodebb-plugin-cloudinary', newConfig, function (err) {
+
+    var dbSettingsString = JSON.stringify(req.body.cloudinarySettings);
+
+    db.set('nodebb-plugin-cloudinary', dbSettingsString, function (err) {
       if (err) {
         return next(err);
       }
-      config = newConfig;
-      cloudinary.config(config);
+      cloudinarySettings = req.body.cloudinarySettings;
+      if (!cloudinarySettings.hasOwnProperty('options')) {
+        cloudinarySettings.options = {};
+      }
+      cloudinary.config(cloudinarySettings.config);
       res.status(200).json({message: 'Config saved!'});
 
     });
@@ -59,17 +67,13 @@ function save(req, res, next) {
 }
 
 
-admin.menu = function (menu, callback) {
+function uploadToCloudinary(uri, callback) {
 
-  menu.plugins.push({
-    route: '/plugins/cloudinary',
-    icon: 'fa-picture-o',
-    name: 'Cloudinary'
-  });
+  cloudinary.uploader.upload(uri, function (result) {
+    callback(result)
+  }, cloudinarySettings.options);
 
-  callback(null, menu);
-
-};
+}
 
 
 module.exports.init = function (params, callback) {
@@ -78,24 +82,26 @@ module.exports.init = function (params, callback) {
   params.router.get('/api/admin/plugins/cloudinary', params.middleware.applyCSRF, renderAdmin);
   params.router.post('/api/admin/plugins/cloudinary/save', params.middleware.applyCSRF, save);
 
-  db.getObject('nodebb-plugin-cloudinary', function (err, dbConfig) {
+  db.get('nodebb-plugin-cloudinary', function (err, dbSettings) {
 
     if (err) {
       return next(err);
     }
 
-    if (dbConfig) {
-      config = dbConfig;
+    if (dbSettings) {
+      cloudinarySettings = JSON.parse(dbSettings);
+      if (!cloudinarySettings.hasOwnProperty('options')) {
+        cloudinarySettings.options = {};
+      }
     }
 
-    cloudinary.config(config);
+    cloudinary.config(cloudinarySettings.config);
     callback();
 
   });
 
 };
 
-module.exports.admin = admin;
 
 module.exports.upload = function (data, callback) {
 
@@ -127,17 +133,20 @@ module.exports.upload = function (data, callback) {
 
 }
 
+module.exports.admin = {
+  menu: function (menu, callback) {
 
-function uploadToCloudinary(uri, callback) {
+    menu.plugins.push({
+      route: '/plugins/cloudinary',
+      icon: 'fa-picture-o',
+      name: 'Cloudinary'
+    });
 
-  var options = {};
+    callback(null, menu);
 
-  if (config.folder.length) {
-    options.folder = config.folder;
   }
-
-  cloudinary.uploader.upload(uri, function (result) {
-    callback(result)
-  }, options);
-
 }
+
+
+
+
