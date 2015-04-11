@@ -12,7 +12,7 @@ var cloudinarySettings = {
     api_secret: '',
   },
   options: {},
-  deleteOnPurge: true
+  deleteOnPurge: 'true'
 };
 
 
