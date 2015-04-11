@@ -4,7 +4,6 @@ var fs = require('fs');
 var async = require('async');
 var cloudinary = require('cloudinary');
 var db = module.parent.require('./database');
-var winston = require('winston');
 
 var cloudinarySettings = {
   config: {
