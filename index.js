@@ -96,6 +96,9 @@ module.exports.init = function (params, callback) {
       if (!cloudinarySettings.hasOwnProperty('options')) {
         cloudinarySettings.options = {};
       }
+      if (!cloudinarySettings.hasOwnProperty('deleteOnPurge')) {
+        cloudinarySettings.deleteOnPurge = 'true';
+      }
     }
 
     cloudinary.config(cloudinarySettings.config);
