@@ -1,6 +1,6 @@
 {
   "name": "nodebb-plugin-cloudinary",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A Plugin that uploads images to cloudinary",
   "main": "index.js",
   "scripts": {
