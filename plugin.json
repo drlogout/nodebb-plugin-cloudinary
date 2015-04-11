@@ -20,6 +20,10 @@
       "hook": "filter:uploadImage",
       "method": "upload",
       "priority": 6
+    },
+    {
+      "hook": "action:post.purge",
+      "method": "postPurge"
     }
   ],
   "templates": "./public/templates"

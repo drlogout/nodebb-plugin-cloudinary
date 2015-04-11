@@ -4,6 +4,7 @@ var fs = require('fs');
 var async = require('async');
 var cloudinary = require('cloudinary');
 var db = module.parent.require('./database');
+var winston = require('winston');
 
 var cloudinarySettings = {
   config: {
@@ -11,38 +12,40 @@ var cloudinarySettings = {
     api_key: '',
     api_secret: '',
   },
-  options: {}
+  options: {},
+  deleteOnPurge: true
 };
 
 
 function renderAdmin(req, res, next) {
 
-    res.render('admin/plugins/cloudinary', {
-      config: cloudinarySettings.config,
-      options: JSON.stringify(cloudinarySettings.options),
-      csrf: req.csrfToken()
-    });
+  var deleteOnPurge = JSON.parse(cloudinarySettings.deleteOnPurge) ? 'checked' : '';
+
+  res.render('admin/plugins/cloudinary', {
+    config: cloudinarySettings.config,
+    options: JSON.stringify(cloudinarySettings.options),
+    deleteOnPurge: deleteOnPurge,
+    csrf: req.csrfToken()
+  });
 
 }
 
+function checkConfig(object) {
+
+  var isValid = true;
+  for (var i in object) {
+    if (!object[i]) {
+      isValid = false;
+      break;
+    }
+  }
+  return isValid;
+
+}
 
 function save(req, res, next) {
 
-  function checkConfig(object) {
-
-    var isValid = true;
-    for (var i in object) {
-      if (!object[i]) {
-        isValid = false;
-        break;
-      }
-    }
-    return isValid;
-
-  }
-
   var configValid = checkConfig(req.body.cloudinarySettings.config);
-
 
   if (configValid) {
 
@@ -53,6 +56,7 @@ function save(req, res, next) {
         return next(err);
       }
       cloudinarySettings = req.body.cloudinarySettings;
+      cloudinarySettings.deleteOnPurge = JSON.parse(cloudinarySettings.deleteOnPurge);
       if (!cloudinarySettings.hasOwnProperty('options')) {
         cloudinarySettings.options = {};
       }
@@ -147,6 +151,52 @@ module.exports.admin = {
 
   }
 }
+
+function getCloudinaryLinks(content) {
+
+  var regex = new RegExp('\\(.*res.cloudinary.com\/' + cloudinarySettings.config.cloud_name + '.*\\)', 'g');
+  var found = content.match(regex);
+
+  if (found) {
+    found = found.map(function (link) {
+      link = link.substring(1, link.length - 1);
+      var parts = link.split('/').filter(function (part) {
+        return part.length;
+      });
+      var public_id = '';
+      if (cloudinarySettings.options.folder.length) {
+        public_id += parts[parts.length - 2] + '/';
+      }
+      public_id += parts[parts.length - 1].substring(0, parts[parts.length - 1].indexOf('.'));
+      return public_id
+    });
+  }
+  return found;
+
+};
+
+module.exports.postPurge = function (pid) {
+
+  if (cloudinarySettings.deleteOnPurge) {
+
+    db.getObject('post:' + pid, function (err, data) {
+
+      if (data.content) {
+
+        var foundPublicIds = getCloudinaryLinks(data.content);
+
+        if (foundPublicIds) {
+
+          cloudinary.api.delete_resources(foundPublicIds);
+
+        }
+      }
+
+    });
+
+  }
+};
+
 
 
 

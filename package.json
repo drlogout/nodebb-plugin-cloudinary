@@ -21,9 +21,32 @@
   },
   "license": "BSD-2-Clause",
   "dependencies": {
-    "cloudinary": "^1.1.2"
+    "cloudinary": "^1.2.0"
   },
   "bugs": {
     "url": "https://github.com/drlogout/nodebb-plugin-cloudinary/issues"
-  }
+  },
+  "gitHead": "2c7210fe6fb74be7eca559b44a9f886239353c16",
+  "homepage": "https://github.com/drlogout/nodebb-plugin-cloudinary",
+  "_id": "nodebb-plugin-cloudinary@0.2.0",
+  "_shasum": "7123bb669825f3b7cf4a0d148817d0c0245e55a4",
+  "_from": "nodebb-plugin-cloudinary@*",
+  "_npmVersion": "2.5.1",
+  "_nodeVersion": "0.12.0",
+  "_npmUser": {
+    "name": "drlogout",
+    "email": "hello@noltech.net"
+  },
+  "maintainers": [
+    {
+      "name": "drlogout",
+      "email": "hello@noltech.net"
+    }
+  ],
+  "dist": {
+    "shasum": "7123bb669825f3b7cf4a0d148817d0c0245e55a4",
+    "tarball": "http://registry.npmjs.org/nodebb-plugin-cloudinary/-/nodebb-plugin-cloudinary-0.2.0.tgz"
+  },
+  "directories": {},
+  "_resolved": "https://registry.npmjs.org/nodebb-plugin-cloudinary/-/nodebb-plugin-cloudinary-0.2.0.tgz"
 }

@@ -16,6 +16,13 @@
 				<input id="api_secret" type="text" class="form-control" placeholder="Enter your API secret" value="{config.api_secret}">
 			</div>
             <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input id="delete_on_purge" type="checkbox" value="deleteOnPurge" {deleteOnPurge}> Delete cloudinary images on post purge
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
                 <label>Cloudinary upload options in JSON format</label>
                 <textarea id="options" class="form-control" rows="6">{options}</textarea>
             </div>
@@ -54,7 +61,6 @@
             }
         }
 
-
         $.ajax({
             url: config.relative_path + '/api/admin/plugins/cloudinary/save',
             method: 'POST',
@@ -66,7 +72,8 @@
                         api_key : $('#api_key').val(),
                         api_secret : $('#api_secret').val(),
                     },
-                    options: options
+                    options: options,
+                    deleteOnPurge: $('#delete_on_purge').is(':checked')
                 }
             },
             success: function(data){
@@ -75,7 +82,7 @@
             error: function(data) {
                 app.alertError(JSON.parse(data.responseText).message);
             }
-        })
+        });
 
 		return false;
 	});
