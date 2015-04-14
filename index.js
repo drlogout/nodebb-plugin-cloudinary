@@ -12,18 +12,21 @@ var cloudinarySettings = {
     api_secret: '',
   },
   options: {},
-  deleteOnPurge: 'true'
+  deleteOnPurge: 'true',
+  secureUrl: 'true'
 };
 
 
 function renderAdmin(req, res, next) {
 
   var deleteOnPurge = JSON.parse(cloudinarySettings.deleteOnPurge) ? 'checked' : '';
+  var secureUrl = JSON.parse(cloudinarySettings.secureUrl) ? 'checked' : '';
 
   res.render('admin/plugins/cloudinary', {
     config: cloudinarySettings.config,
     options: JSON.stringify(cloudinarySettings.options),
     deleteOnPurge: deleteOnPurge,
+    secureUrl: secureUrl,
     csrf: req.csrfToken()
   });
 
@@ -56,6 +59,7 @@ function save(req, res, next) {
       }
       cloudinarySettings = req.body.cloudinarySettings;
       cloudinarySettings.deleteOnPurge = JSON.parse(cloudinarySettings.deleteOnPurge);
+      cloudinarySettings.secureUrl = JSON.parse(cloudinarySettings.secureUrl);
       if (!cloudinarySettings.hasOwnProperty('options')) {
         cloudinarySettings.options = {};
       }
@@ -99,6 +103,9 @@ module.exports.init = function (params, callback) {
       if (!cloudinarySettings.hasOwnProperty('deleteOnPurge')) {
         cloudinarySettings.deleteOnPurge = 'true';
       }
+      if (!cloudinarySettings.hasOwnProperty('secureUrl')) {
+        cloudinarySettings.secureUrl = 'true';
+      }
     }
 
     cloudinary.config(cloudinarySettings.config);
@@ -130,8 +137,10 @@ module.exports.upload = function (data, callback) {
       return callback(data.error);
     }
 
+    var url = JSON.parse(cloudinarySettings.secureUrl) ? data.secure_url : data.url;
+
     callback(null, {
-      url: data.url,
+      url: url,
       name: image.name || ''
     });
 

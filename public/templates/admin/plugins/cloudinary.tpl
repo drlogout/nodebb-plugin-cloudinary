@@ -23,6 +23,13 @@
                 </div>
             </div>
             <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input id="secure_url" type="checkbox" value="secureUrl" {secureUrl}> Use secure image urls (https instead of http)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
                 <label>Cloudinary upload options in JSON format</label>
                 <textarea id="options" class="form-control" rows="6">{options}</textarea>
             </div>
@@ -73,7 +80,8 @@
                         api_secret : $('#api_secret').val(),
                     },
                     options: options,
-                    deleteOnPurge: $('#delete_on_purge').is(':checked')
+                    deleteOnPurge: $('#delete_on_purge').is(':checked'),
+                    secureUrl: $('#secure_url').is(':checked')
                 }
             },
             success: function(data){

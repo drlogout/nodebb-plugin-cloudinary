@@ -1,6 +1,6 @@
 {
   "name": "nodebb-plugin-cloudinary",
-  "version": "0.3.3",
+  "version": "0.3.1",
   "description": "A Plugin that uploads images to cloudinary",
   "main": "index.js",
   "scripts": {
@@ -28,8 +28,8 @@
   },
   "gitHead": "2c7210fe6fb74be7eca559b44a9f886239353c16",
   "homepage": "https://github.com/drlogout/nodebb-plugin-cloudinary",
-  "_id": "nodebb-plugin-cloudinary@0.2.0",
-  "_shasum": "7123bb669825f3b7cf4a0d148817d0c0245e55a4",
+  "_id": "nodebb-plugin-cloudinary@0.3.1",
+  "_shasum": "0e01f09adc922c43476c7f0ceaf21151080775ed",
   "_from": "nodebb-plugin-cloudinary@*",
   "_npmVersion": "2.5.1",
   "_nodeVersion": "0.12.0",
@@ -48,5 +48,7 @@
     "tarball": "http://registry.npmjs.org/nodebb-plugin-cloudinary/-/nodebb-plugin-cloudinary-0.2.0.tgz"
   },
   "directories": {},
-  "_resolved": "https://registry.npmjs.org/nodebb-plugin-cloudinary/-/nodebb-plugin-cloudinary-0.2.0.tgz"
+  "_resolved": "https://registry.npmjs.org/nodebb-plugin-cloudinary/-/nodebb-plugin-cloudinary-0.2.0.tgz",
+  "readme": "# NodeBB Plugin Cloudinary\r\n\r\nA plugin that uploads images to Cloudinary.\r\nInspired by https://github.com/barisusakli/nodebb-plugin-imgur\r\n\r\n## Installation\r\n\r\n    npm install nodebb-plugin-cloudinary\r\n\r\n\r\nAfter installation add your Cloudinary config in the control panel.\r\n\r\n\r\n",
+  "readmeFilename": "README.md"
 }
