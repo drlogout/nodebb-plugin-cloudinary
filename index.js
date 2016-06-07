@@ -1,7 +1,5 @@
 'use strict';
 
-var fs = require('fs');
-var async = require('async');
 var cloudinary = require('cloudinary');
 var db = module.parent.require('./database');
 
@@ -23,7 +21,7 @@ function renderAdmin(req, res, next) {
   var secureUrl = JSON.parse(cloudinarySettings.secureUrl) ? 'checked' : '';
 
   res.render('admin/plugins/cloudinary', {
-    config: cloudinarySettings.config,
+    cloudinaryConfig: cloudinarySettings.config,
     options: JSON.stringify(cloudinarySettings.options),
     deleteOnPurge: deleteOnPurge,
     secureUrl: secureUrl,
@@ -77,9 +75,8 @@ function save(req, res, next) {
 function uploadToCloudinary(uri, callback) {
 
   cloudinary.uploader.upload(uri, function (result) {
-    callback(result)
+    callback(result);
   }, cloudinarySettings.options);
-
 }
 
 
@@ -175,15 +172,14 @@ function getCloudinaryLinks(content) {
         return part.length;
       });
       var public_id = '';
-      if (cloudinarySettings.options.folder.length) {
+      if (cloudinarySettings.options.folder && cloudinarySettings.options.folder.length) {
         public_id += parts[parts.length - 2] + '/';
       }
       public_id += parts[parts.length - 1].substring(0, parts[parts.length - 1].indexOf('.'));
-      return public_id
+      return public_id;
     });
   }
   return found;
-
 };
 
 module.exports.postPurge = function (pid) {
