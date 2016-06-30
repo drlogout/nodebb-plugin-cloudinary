@@ -5,15 +5,15 @@
 		<div class="col-sm-4 col-xs-12">
 			<div class="form-group">
 				<label>Cloud Name</label>
-				<input id="cloud_name" type="text" class="form-control" placeholder="Enter your cloud name" value="{config.cloud_name}">
+				<input id="cloud_name" type="text" class="form-control" placeholder="Enter your cloud name" value="{cloudinaryConfig.cloud_name}">
 			</div>
 			<div class="form-group">
 				<label>API Key</label>
-				<input id="api_key" type="text" class="form-control" placeholder="Enter your API key" value="{config.api_key}">
+				<input id="api_key" type="text" class="form-control" placeholder="Enter your API key" value="{cloudinaryConfig.api_key}">
 			</div>
 			<div class="form-group">
 				<label>API Secret</label>
-				<input id="api_secret" type="text" class="form-control" placeholder="Enter your API secret" value="{config.api_secret}">
+				<input id="api_secret" type="text" class="form-control" placeholder="Enter your API secret" value="{cloudinaryConfig.api_secret}">
 			</div>
             <div class="form-group">
                 <div class="checkbox">
