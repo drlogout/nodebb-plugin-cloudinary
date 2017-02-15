@@ -182,11 +182,11 @@ function getCloudinaryLinks(content) {
   return found;
 };
 
-module.exports.postPurge = function (pid) {
+module.exports.postPurge = function (data) {
 
   if (cloudinarySettings.deleteOnPurge) {
 
-    db.getObject('post:' + pid, function (err, data) {
+    db.getObject('post:' + data.post.pid, function (err, data) {
 
       if (data.content) {
 
